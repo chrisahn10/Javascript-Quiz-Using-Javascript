@@ -5,6 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Quiz Made With JavaScript</title>
-    <link rel="stylesheet" href="./assets/css/reset.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
 </head>
+
+<body>
+    <header class="header container">
+        <div class="nav container">
+            <nav>
+                <button class="nav__highscore">View Highscores</button>
+                <h1 class="nav__timer" id="timer">Time: 0</h1>
+            </nav>
+        </div>
+    </header>
+    <main class="main__section">
+        <div class="start container" id="start">
+            <h1 class="start__title">Coding Quiz Challenge</h1>
+                <h3 class="start__content">Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</h3>
+                <button class="start__start" id="start_button">Start Quiz</button>
+        </div>
+        <div  id="question__container"class="question container hidden">
+            <h1 class="question__title" id="questionTitle"></h1>
+            <div class="qChoices__containter">
+                <button class="question__choice" id="choice_1"></button>
+                <button class="question__choice" id="choice_2"></button>
+                <button class="question__choice" id="choice_3"></button>
+                <button class="question__choice" id="choice_4"></button>
+            </div>
+
+        </div>
+    </main>
+    <script src="./assets/main.js"></script>
+</body>
+</html>
