@@ -67,7 +67,8 @@ const cQuestionChoice = document.getElementById("choice_3")
 const dQuestionChoice = document.getElementById("choice_4")
 const rightworng = document.querySelector(".rightwrong__content")
 const backMain = document.querySelector(".backToMain")
-const scoreSubmit = document.querySelector("highscore__input")
+const scoreSubmit = document.querySelector(".highscore__input")
+const scoreboardTexet = document.querySelector(".scoreboard__text")
 
 
 let countdown = 0;
@@ -133,9 +134,9 @@ function updateScore() {
             timer.textContent = "END"
             currentQuestion = 0;
             rightworng.textContent = "Your score is: " + countdown
-            highscores()
             questionContainer.classList.add("hidden")
-            
+            scoreboard.push(countdown)
+            highscores()
         }    
     countdown --;      
 }
@@ -147,6 +148,7 @@ function highscores () {
     highscoreButton.classList.add("hidden")
     backMain.classList.remove("hidden")
     backMain.addEventListener("click", highToMain)
+    renderScores()
 }
 
 function highToMain () {
@@ -154,15 +156,25 @@ function highToMain () {
     mainEl.classList.remove("hidden")
     highscoreButton.classList.remove("hidden")
     backMain.classList.add("hidden")
+
 }
 
-function saveScore () {
+function renderScores() {
+    const savedScores = localStorage.getItem("savedScores")
+    scoreboard = JSON.parse(savedScores)
+    scoreboardTexet.textContent = scoreboard.join(", ")
     
+}
+
+function saveScore (event) {
+    event.preventDefault();
+    localStorage.setItem("savedScores", JSON.stringify(scoreboard))
+    renderScores()
 }
 
 startButton.addEventListener("click", quizStart)
 highscoreButton.addEventListener("click", highscores)
-
+scoreSubmit.addEventListener("click", saveScore)
 
 
 
