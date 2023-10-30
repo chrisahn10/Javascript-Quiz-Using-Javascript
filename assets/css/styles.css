@@ -28,13 +28,33 @@ nav {
 }
 
 .question {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.question__choice {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+}
+
+.rightwrong {
+    text-align: center;
     display: flex;
     justify-content: center;
+    width: 50%;
 }
 
-.qChoices__container {
+.highscore__screen {
     display: flex;
+    width: 50%;
+    flex-direction: column;
+    padding: 2rem;
 }
 
-.main__section {
+.highscore__input__text {
+    padding-bottom: 2rem;
 }

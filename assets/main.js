@@ -52,10 +52,12 @@ const questions = [
     },
 
 ]
-let countdown = 5
+
 const mainEl = document.querySelector(".start")
 const mainSection = document.querySelector(".main__section")
 const startButton = document.getElementById("start_button")
+const highscoreButton = document.querySelector(".nav__highscore")
+const highscoreScreen = document.querySelector(".highscore__screen")
 const timer = document.getElementById("timer")
 const questionContainer = document.getElementById("question__container")
 const questionTitle = document.getElementById("questionTitle")
@@ -63,40 +65,104 @@ const aQuestionChoice = document.getElementById("choice_1")
 const bQuestionChoice = document.getElementById("choice_2")
 const cQuestionChoice = document.getElementById("choice_3")
 const dQuestionChoice = document.getElementById("choice_4")
+const rightworng = document.querySelector(".rightwrong__content")
+const backMain = document.querySelector(".backToMain")
+const scoreSubmit = document.querySelector("highscore__input")
 
+
+let countdown = 0;
+var currentQuestion = 0;
+let scoreboard = [];
 
 function quizStart() {
+    countdown = 90;
+    rightworng.textContent = ""
     timerStart()
+    updateScore()
     questionContainer.classList.remove("hidden")
     mainEl.classList.add("hidden")
-    for (let i = 0; i < questions.length; i++) {
-        questionTitle.textContent = questions[i].question
-        aQuestionChoice.textContent = questions[i].answerChoices[0]
-        bQuestionChoice.textContent = questions[i].answerChoices[1] 
-        cQuestionChoice.textContent = questions[i].answerChoices[2] 
-        dQuestionChoice.textContent = questions[i].answerChoices[3] 
+    questionLoader()
+
+}
+
+function questionLoader() {
+    aQuestionChoice.addEventListener("click", questionClick)
+    bQuestionChoice.addEventListener("click", questionClick)
+    cQuestionChoice.addEventListener("click", questionClick)
+    dQuestionChoice.addEventListener("click", questionClick)
+    if(currentQuestion < 10) {
+        questionTitle.textContent = questions[currentQuestion].question
+        aQuestionChoice.textContent = questions[currentQuestion].answerChoices[0]
+        bQuestionChoice.textContent = questions[currentQuestion].answerChoices[1] 
+        cQuestionChoice.textContent = questions[currentQuestion].answerChoices[2] 
+        dQuestionChoice.textContent = questions[currentQuestion].answerChoices[3] 
     }
+}
 
+function questionClick(event) {
+    let choice = event.target;
+    if (choice.textContent === questions[currentQuestion].questionAnswer) {
+        rightworng.textContent = "Correct!"
+    } else {
+        rightworng.textContent = "Wrong! -15 seconds"
+        if (countdown < 15) {
+            countdown = 1;
+            updateScore()
+        } else {
+            countdown -= 15;
+            updateScore()
+        }
+    }
+    currentQuestion++;
 
-
+    questionLoader();
 }
 
 function timerStart () {
-    const timeLeft = setInterval(function() {
-        countdown--;
-        timer.textContent = "Time: " + countdown;
-        if(countdown === 0) {
-            clearInterval(timeLeft);
-            timer.textContent = "END"
-            mainEl.classList.remove("hidden")
-            questionContainer.classList.add("hidden")
-
-        }
-        
+    timeLeft = setInterval(function() {
+        updateScore()
+  
     }, 1000);
 }
 
+function updateScore() {
+
+    timer.textContent = "Time: " + countdown;
+        if(countdown <= 0 || currentQuestion === 10) {
+            clearInterval(timeLeft);
+            timer.textContent = "END"
+            currentQuestion = 0;
+            rightworng.textContent = "Your score is: " + countdown
+            highscores()
+            questionContainer.classList.add("hidden")
+            
+        }    
+    countdown --;      
+}
+
+function highscores () {
+    countdown = 90;
+    highscoreScreen.classList.remove("hidden")
+    mainEl.classList.add("hidden")
+    highscoreButton.classList.add("hidden")
+    backMain.classList.remove("hidden")
+    backMain.addEventListener("click", highToMain)
+}
+
+function highToMain () {
+    highscoreScreen.classList.add("hidden")
+    mainEl.classList.remove("hidden")
+    highscoreButton.classList.remove("hidden")
+    backMain.classList.add("hidden")
+}
+
+function saveScore () {
+    
+}
+
 startButton.addEventListener("click", quizStart)
+highscoreButton.addEventListener("click", highscores)
+
 
 
 
