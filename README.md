@@ -16,7 +16,7 @@ There is also a button in the nav bar to see the highscores list
 
 The timer in the top right updates every second or everytime you get a question wrong.
 
-![Demo gif of the quiz] (assets/image.gif)
+![demo gif](/assets/image.gif)
 
 Deployed Application : https://chrisahn10.github.io/Javascript-Quiz-Using-Javascript/
 
