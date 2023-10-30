@@ -68,12 +68,12 @@ const dQuestionChoice = document.getElementById("choice_4")
 const rightworng = document.querySelector(".rightwrong__content")
 const backMain = document.querySelector(".backToMain")
 const scoreSubmit = document.querySelector(".highscore__input")
-const scoreboardTexet = document.querySelector(".scoreboard__text")
+const scoreboardText = document.querySelector(".scoreboard__text")
 
 
-let countdown = 0;
+let countdown = 90;
 var currentQuestion = 0;
-let scoreboard = [];
+let scoreboard = JSON.parse(localStorage.getItem("scoreboard")) || [];
 
 function quizStart() {
     countdown = 90;
@@ -135,14 +135,13 @@ function updateScore() {
             currentQuestion = 0;
             rightworng.textContent = "Your score is: " + countdown
             questionContainer.classList.add("hidden")
-            scoreboard.push(countdown)
             highscores()
+            return
         }    
     countdown --;      
 }
 
 function highscores () {
-    countdown = 90;
     highscoreScreen.classList.remove("hidden")
     mainEl.classList.add("hidden")
     highscoreButton.classList.add("hidden")
@@ -160,21 +159,47 @@ function highToMain () {
 }
 
 function renderScores() {
-    const savedScores = localStorage.getItem("savedScores")
-    scoreboard = JSON.parse(savedScores)
-    scoreboardTexet.textContent = scoreboard.join(", ")
-    
+    var highscores = JSON.parse(window.localStorage.getItem("scoreboard")) || [];
+    highscores.sort(function (a, b) {
+        return b.score - a.score;
+    });
+    scoreboardText.innerHTML = ""
+    highscores.forEach(function (score) {
+        var scorelist = document.createElement("li");
+        scorelist.textContent = score.initials + " - " + score.score;
+        scoreboardText.appendChild(scorelist);
+    });
+
 }
 
-function saveScore (event) {
-    event.preventDefault();
-    localStorage.setItem("savedScores", JSON.stringify(scoreboard))
-    renderScores()
+function saveScore () {
+        let initials = scoreSubmit.value.trim();
+        if (initials !== "") {
+            let newScore = {
+                score: countdown,
+                initials : initials,
+            }
+            scoreboard.push(newScore);
+            localStorage.setItem("scoreboard", JSON.stringify(scoreboard))
+        }
+
+        renderScores()
+    }
+
+function clearScore() {
+    console.log("this button works")
+    localStorage.removeItem("scoreboard");
+    scoreboard = [];
+    renderScores();
 }
 
 startButton.addEventListener("click", quizStart)
 highscoreButton.addEventListener("click", highscores)
-scoreSubmit.addEventListener("click", saveScore)
-
+document.getElementById("clear__scores").addEventListener("click", clearScore)
+document.getElementById("scoreForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    saveScore();
+  });
+  
 
 
